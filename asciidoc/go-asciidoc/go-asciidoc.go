@@ -43,7 +43,7 @@ func main() {
   var err error
   if setDate != "" {
     log.Printf("Date hard-coded to %s\n", setDate)
-    tm, err = test10.UtilConvertDate(setDate)
+    tm, err = asciidoc.UtilConvertDate(setDate)
     if err != nil {
       log.Fatal(err)
     }
@@ -58,9 +58,10 @@ func main() {
   infile := flag.Arg(0)
 
   outfilename := generateOutputFilename(infile)
+  fmt.Printf("Writing output to %s\n", outfilename)
   outfile, err := os.Create(outfilename)
   if err != nil {
-    fmt.Errorf("%s", err)
+    log.Fatalf("%s", err)
   }
   defer outfile.Close()
 
@@ -69,7 +70,7 @@ func main() {
     log.Fatal(err)
   }
   filestr := string(filedata)
-  generator := test10.NewGenerator()
+  generator := asciidoc.NewGenerator()
   generator.Parse(filestr, tm)
   if generator.Warning {
     for _, message := range generator.WarningList {
